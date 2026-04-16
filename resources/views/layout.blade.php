@@ -24,6 +24,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">Контакты</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary text-white" href="{{ route('signin.form') }}">Регистрация</a>
+                </li>
                 </ul>
             </div>
         </nav>
