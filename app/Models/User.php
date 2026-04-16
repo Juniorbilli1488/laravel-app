@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->role && $this->role->slug === 'reader';
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

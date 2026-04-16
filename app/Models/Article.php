@@ -16,4 +16,13 @@ class Article extends Model
         'preview_image',
         'full_image',
     ];
+    public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+public function approvedComments()
+{
+    return $this->hasMany(Comment::class)->where('is_approved', true);
+}
 }

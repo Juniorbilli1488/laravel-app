@@ -5,6 +5,8 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleAdminController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CommentController;
+
 
 Route::get('/', [MainController::class, 'index']);
 Route::get('/about', fn() => view('main/about'));
@@ -35,4 +37,12 @@ Route::middleware('auth')->group(function () {
         'update' => 'admin.articles.update',
         'destroy' => 'admin.articles.destroy',
     ]);
+
+    // Комментарии
+Route::post('/articles/{articleId}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/comments', [CommentController::class, 'pending'])->name('admin.comments.pending');
+    Route::put('/admin/comments/{id}/approve', [CommentController::class, 'approve'])->name('admin.comments.approve');
+    Route::delete('/admin/comments/{id}/reject', [CommentController::class, 'reject'])->name('admin.comments.reject');
+});
 });

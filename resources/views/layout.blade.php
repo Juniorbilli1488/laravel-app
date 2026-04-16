@@ -52,6 +52,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.articles.index') }}">Управление</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.comments.pending') }}">
+                                    <i class="bi bi-chat-dots"></i> Модерация комментариев
+                                </a>    
+                            </li>
                         @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
