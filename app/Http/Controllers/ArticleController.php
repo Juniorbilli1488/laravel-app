@@ -6,7 +6,7 @@ use App\Models\Article;
 
 class ArticleController extends Controller
 {
-    // Список новостей для пользователей (с пагинацией)
+    // Список новостей для пользователей (с пагинацией 5)
     public function index()
     {
         $articles = Article::paginate(5);

@@ -7,17 +7,26 @@ use Illuminate\Http\Request;
 
 class ArticleAdminController extends Controller
 {
+    // Конструктор - защищаем все методы кроме index (если нужно)
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index']);
+    }
+
+    // Список статей для админки
     public function index()
     {
         $articles = Article::paginate(10);
         return view('admin.index', ['articles' => $articles]);
     }
 
+    // Форма создания статьи
     public function create()
     {
         return view('admin.create');
     }
 
+    // Сохранение новой статьи
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -34,12 +43,13 @@ class ArticleAdminController extends Controller
             ->with('success', 'Статья успешно создана!');
     }
 
+    // Форма редактирования статьи
     public function edit($id)
     {
-        $article = Article::findOrFail($id);
-        return view('admin.edit', ['article' => $article]);
+        return view('admin.edit', ['article' => Article::findOrFail($id)]);
     }
 
+    // Обновление статьи
     public function update(Request $request, $id)
     {
         $article = Article::findOrFail($id);
@@ -58,6 +68,7 @@ class ArticleAdminController extends Controller
             ->with('success', 'Статья успешно обновлена!');
     }
 
+    // Удаление статьи
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
