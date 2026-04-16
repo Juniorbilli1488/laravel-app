@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ru">
-  <head>
+<head>
     <title>Новостной сайт</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -83,11 +83,14 @@
                             </a>
                         </li>
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/articles">
-                                <i class="bi bi-gear"></i> Управление
-                            </a>
-                        </li>
+                        <!-- Управление статьями - только для модератора -->
+                        @if(Auth::user()->isModerator())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.articles.index') }}">
+                                    <i class="bi bi-gear"></i> Управление
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                                 <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
