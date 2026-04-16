@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Mail\NewArticleMail;
+use App\Jobs\VeryLongJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -50,11 +51,11 @@ class ArticleAdminController extends Controller
 
         $article = Article::create($validated);
 
-        // Отправка письма на почту
-        Mail::to('juniorbilli1488@gmail.com')->send(new NewArticleMail($article));
+        // Отправка письма через очередь
+        VeryLongJob::dispatch($article, 'juniorbilli1488@gmail.com');
 
         return redirect()->route('admin.articles.index')
-            ->with('success', 'Статья успешно создана! Уведомление отправлено на почту.');
+            ->with('success', 'Статья успешно создана! Уведомление отправлено в очередь.');
     }
 
     public function edit($id)
