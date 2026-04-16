@@ -28,19 +28,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // Отношение к роли
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-    // Проверка, является ли пользователь модератором
     public function isModerator()
     {
         return $this->role && $this->role->slug === 'moderator';
     }
 
-    // Проверка, является ли пользователь читателем
     public function isReader()
     {
         return $this->role && $this->role->slug === 'reader';

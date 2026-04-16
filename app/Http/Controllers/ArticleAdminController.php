@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Mail\NewArticleMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 class ArticleAdminController extends Controller
 {
@@ -15,7 +17,7 @@ class ArticleAdminController extends Controller
 
     public function index()
     {
-        if (!Gate::allows('viewAny', Article::class)) {
+        if (!auth()->user()->isModerator()) {
             abort(403, 'У вас нет прав для просмотра этой страницы.');
         }
 
@@ -25,7 +27,7 @@ class ArticleAdminController extends Controller
 
     public function create()
     {
-        if (!Gate::allows('create', Article::class)) {
+        if (!auth()->user()->isModerator()) {
             abort(403, 'У вас нет прав для создания статей.');
         }
 
@@ -34,7 +36,7 @@ class ArticleAdminController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('create', Article::class)) {
+        if (!auth()->user()->isModerator()) {
             abort(403, 'У вас нет прав для создания статей.');
         }
 
@@ -46,30 +48,32 @@ class ArticleAdminController extends Controller
             'full_image' => 'nullable|string|max:255',
         ]);
 
-        Article::create($validated);
+        $article = Article::create($validated);
+
+        // Отправка письма на почту
+        Mail::to('juniorbilli1488@gmail.com')->send(new NewArticleMail($article));
 
         return redirect()->route('admin.articles.index')
-            ->with('success', 'Статья успешно создана!');
+            ->with('success', 'Статья успешно создана! Уведомление отправлено на почту.');
     }
 
     public function edit($id)
     {
-        $article = Article::findOrFail($id);
-
-        if (!Gate::allows('update', $article)) {
+        if (!auth()->user()->isModerator()) {
             abort(403, 'У вас нет прав для редактирования статей.');
         }
 
+        $article = Article::findOrFail($id);
         return view('admin.edit', ['article' => $article]);
     }
 
     public function update(Request $request, $id)
     {
-        $article = Article::findOrFail($id);
-
-        if (!Gate::allows('update', $article)) {
+        if (!auth()->user()->isModerator()) {
             abort(403, 'У вас нет прав для редактирования статей.');
         }
+
+        $article = Article::findOrFail($id);
 
         $validated = $request->validate([
             'title' => 'required|string|min:3|max:255',
@@ -87,12 +91,11 @@ class ArticleAdminController extends Controller
 
     public function destroy($id)
     {
-        $article = Article::findOrFail($id);
-
-        if (!Gate::allows('delete', $article)) {
+        if (!auth()->user()->isModerator()) {
             abort(403, 'У вас нет прав для удаления статей.');
         }
 
+        $article = Article::findOrFail($id);
         $article->delete();
 
         return redirect()->route('admin.articles.index')

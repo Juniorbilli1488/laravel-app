@@ -14,11 +14,9 @@ Route::get('/contact', function() {
 });
 Route::get('/gallery/{id}', [MainController::class, 'gallery'])->name('gallery');
 
-// НОВОСТИ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
 
-// АУТЕНТИФИКАЦИЯ
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
@@ -28,7 +26,6 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// АДМИНКА - ИСПОЛЬЗУЕМ ДРУГОЕ ИМЯ ДЛЯ МАРШРУТА
 Route::middleware('auth')->group(function () {
     Route::resource('/admin/articles', ArticleAdminController::class)->except(['show'])->names([
         'index' => 'admin.articles.index',
