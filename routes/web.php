@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
-
+use App\Http\Controllers\ArticleAdminController;
 
 Route::get('/', [MainController::class, 'index']);
 
@@ -28,3 +28,6 @@ Route::get('/signin', [AuthController::class, 'create'])->name('signin.form');
 Route::post('/signin', [AuthController::class, 'registration'])->name('signin');
 
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+
+Route::resource('/admin/articles', ArticleAdminController::class);

@@ -18,18 +18,24 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/about">О нас <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact">Контакты</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('articles.index') }}">Новости из БД</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-primary text-white" href="{{ route('signin.form') }}">Регистрация</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">О нас</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Контакты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('signin.form') }}">Регистрация</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('articles.index') }}">Новости</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/articles">Управление статьями</a>
+                    </li>
                 </ul>
             </div>
         </nav>
